@@ -2,7 +2,7 @@
 // Game score
 var score = 0;
 var level = 1;
-var increment = 5;
+var increment = 1;
 var spanScore = document.getElementById("score_id");
 
 // Enemies our player must avoid
@@ -65,19 +65,32 @@ var Player = function () {
 };
 // Player prototype
 Player.prototype.update = function () {
-    if (this.key === 'left' && this.x > 0) {
-        this.x = this.x - 50;
-        score += 1;
-    } else if (this.key === 'up' && this.y > 0) {
-        this.y = this.y - 50;
-        score += 2;
-    } else if (this.key === 'right' && this.x < 400) {
-        this.x = this.x + 50;
-        score += 1;
-    } else if (this.key === 'down' && this.y < 400) {
-        this.y = this.y + 50;
-        score += 3;
+
+    if (this.key === 'left' ||
+        this.key === 'right' ||
+        this.key === 'up' ||
+        this.key === 'down' ) {
+
+        if (this.key === 'left' && this.x > 0) {
+            this.x = this.x - 50;
+            score += 1;
+        } else if (this.key === 'up' && this.y > 0) {
+            this.y = this.y - 50;
+            score += 2;
+        } else if (this.key === 'right' && this.x < 400) {
+            this.x = this.x + 50;
+            score += 1;
+        } else if (this.key === 'down' && this.y < 400) {
+            this.y = this.y + 50;
+            score += 3;
+        }
+
+        score += increment * level;
+        level++;
+        spanScore.innerHTML = score;
+
     }
+
     this.key = null;
 
     if (this.y < 50) {
@@ -97,10 +110,9 @@ Player.prototype.update = function () {
 
         }
         allEnemies.push(new Enemy(-300, lane));
-        score += increment * level;
-        level++;
-        spanScore.innerHTML = score;
     }
+
+
 };
 
 Player.prototype.render = function () {
